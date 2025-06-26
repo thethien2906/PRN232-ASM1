@@ -1,0 +1,108 @@
+﻿@model HIV_CARE.Repositories.ThienTTT.Models.AppointmentThienTtt
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>AppointmentThienTtt</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PatientName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AppointmentDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppointmentDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AppointmentTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppointmentTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EstimatedDuration)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EstimatedDuration) minutes
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ConsultationType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ConsultationType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Priority)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Priority)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsConfirmed)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsConfirmed)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsCompleted)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsCompleted)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsAnonymous)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsAnonymous)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TotalFee)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TotalFee)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+        <dt class="col-sm-2">
+            Doctor
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DoctorsPhatNh.LicenseNumber) - @Html.DisplayFor(model => model.DoctorsPhatNh.Specialization)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.AppointmentsThienTttid">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

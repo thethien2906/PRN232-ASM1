@@ -1,0 +1,6 @@
+@HIV_CARE.APIServices.BE.ThienTTT_HostAddress = http://localhost:5131
+
+GET {{HIV_CARE.APIServices.BE.ThienTTT_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

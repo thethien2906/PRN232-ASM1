@@ -1,0 +1,122 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.config.user
+*.psess
+*.vssscc
+*.bak
+*.scc
+
+# Build Results
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+[Tt]emp/
+*.log
+*.pdb
+*.i?
+*.ipdb
+*.opendb
+*.tlog
+*.trx
+*.vsix
+*.builds
+
+# NuGet packages
+packages/
+*.nupkg
+*.cache
+*.vsixmanifest
+
+# Rider
+.idea/
+
+# Resharper
+*.DotSettings
+
+# Visual Studio Code
+.vscode/
+
+# Ignore for projects in the solution
+*/bin/
+*/obj/
+
+# Local Deployment
+_PublishedWebsites/
+
+# Azure Cloud Services
+csx/
+*.build.csdef
+
+# Windows Package Manager (winget)
+winget-pkgs/
+
+# Local user-specific files
+*.user
+*.suo
+
+# Test Results
+TestResults/
+
+# Miscellaneous
+[Tt]humbs.db
+*.bak
+*.tmp
+*.junk
+*.userprefs
+
+# .NET Specific
+*.dll
+*.exe
+*.o
+*.so
+*.lo
+*.la
+*.pyc
+*.pyo
+*.rej
+*.swp
+*.zip
+*.rar
+*.7z
+*.gz
+*.tar
+*.iso
+*.dmg
+
+# Solution and Project files
+*.sln.docstates
+*.vsproj.user
+*.csproj.user
+*.sqlproj.user
+*.dbproj.user
+
+# Mac
+.DS_Store
+
+# Node.js
+node_modules/
+
+# DotNet tools
+.config/dotnet-tools.json
+.config/dotnet-tools.xml
+
+# VS Code workspace settings
+.vscode/settings.json
+
+# VS Code launch configurations
+.vscode/launch.json
+
+# VS Code tasks
+.vscode/tasks.json
+
+# Azure Functions
+local.settings.json
+
+# Swashbuckle (Swagger)
+swagger-ui/
+
+# ASP.NET Core User Secrets
+appsettings.Development.json

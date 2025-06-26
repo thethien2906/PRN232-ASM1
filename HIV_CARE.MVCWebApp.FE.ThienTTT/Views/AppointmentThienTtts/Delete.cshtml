@@ -1,0 +1,57 @@
+﻿@model HIV_CARE.Repositories.ThienTTT.Models.AppointmentThienTtt
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this appointment?</h3>
+<div>
+    <h4>AppointmentThienTtt</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PatientName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AppointmentDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppointmentDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AppointmentTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppointmentTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ConsultationType)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ConsultationType)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+        <dt class="col-sm-2">
+            Doctor
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DoctorsPhatNh.LicenseNumber) - @Html.DisplayFor(model => model.DoctorsPhatNh.Specialization)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="AppointmentsThienTttid" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </form>
+</div>
