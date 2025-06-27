@@ -1,8 +1,9 @@
-﻿@* Views/AppointmentsThienTtts/Index.cshtml *@
-@model IEnumerable<HIV_CARE.Repositories.ThienTTT.Models.AppointmentThienTtt>
+﻿@model IEnumerable<HIV_CARE.Repositories.ThienTTT.Models.AppointmentThienTtt>
 
 @{
     ViewData["Title"] = "Index";
+    var doctors = ViewBag.Doctors as List<HIV_CARE.Repositories.ThienTTT.Models.DoctorPhatNh>;
+    var isSearchResult = ViewBag.SearchResult as bool? ?? false;
 }
 
 <h1>Index</h1>
@@ -10,6 +11,73 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<!-- Search Form -->
+<div class="row">
+    <div class="col-md-12">
+        <form method="post" asp-action="Index">
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Appointment ID:</label>
+                    <input type="number" name="appointmentId" class="form-control" value="@ViewBag.AppointmentId" />
+                </div>
+                <div class="col-md-3">
+                    <label>Date:</label>
+                    <input type="date" name="date" class="form-control" value="@(ViewBag.Date != null ? ((DateTime)ViewBag.Date).ToString("yyyy-MM-dd") : "")" />
+                </div>
+                <div class="col-md-2">
+                    <label>Doctor:</label>
+                    <select name="doctorId" class="form-control">
+                        <option value="">-- Select Doctor --</option>
+                        @if (doctors != null)
+                        {
+                            @foreach (var doctor in doctors)
+                            {
+                                <option value="@doctor.DoctorsPhatNhid" selected="@(ViewBag.DoctorId != null && ViewBag.DoctorId.ToString() == doctor.DoctorsPhatNhid.ToString())">
+                                    @doctor.LicenseNumber - @doctor.Specialization
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label>Page:</label>
+                    <input type="number" name="currentPage" class="form-control" value="@(ViewBag.CurrentPage ?? 1)" min="1" />
+                </div>
+                <div class="col-md-2">
+                    <label>Page Size:</label>
+                    <select name="pageSize" class="form-control">
+                        <option value="5" selected="@(ViewBag.PageSize == 5)">5</option>
+                        <option value="10" selected="@(ViewBag.PageSize == 10 || ViewBag.PageSize == null)">10</option>
+                        <option value="20" selected="@(ViewBag.PageSize == 20)">20</option>
+                        <option value="50" selected="@(ViewBag.PageSize == 50)">50</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label>&nbsp;</label><br />
+                    <input type="submit" value="Search" class="btn btn-primary" />
+                    <a href="@Url.Action("Index")" class="btn btn-secondary">Clear</a>
+                </div>
+            </div>
+            @if (isSearchResult)
+            {
+                <!-- These are now shown in the form above, but keep hidden for pagination links -->
+            }
+        </form>
+    </div>
+</div>
+
+<hr />
+
+@if (isSearchResult)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <p>Found @ViewBag.TotalItems result(s). Page @ViewBag.CurrentPage of @ViewBag.TotalPages</p>
+        </div>
+    </div>
+}
+
 <table class="table">
     <thead>
         <tr>
@@ -68,65 +136,91 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PatientName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AppointmentDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AppointmentTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EstimatedDuration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ConsultationType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Priority)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsConfirmed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsCompleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsAnonymous)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalFee)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ModifiedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DoctorsPhatNh.LicenseNumber)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AppointmentsThienTttid">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AppointmentsThienTttid">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AppointmentsThienTttid">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PatientName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppointmentDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppointmentTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EstimatedDuration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ConsultationType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Priority)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsConfirmed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsCompleted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsAnonymous)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalFee)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Notes)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifiedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModifiedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DoctorsPhatNh.LicenseNumber)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.AppointmentsThienTttid">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.AppointmentsThienTttid">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.AppointmentsThienTttid">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@if (isSearchResult && ViewBag.TotalPages > 1)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ul class="pagination">
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                            <form method="post" asp-action="Index" style="display:inline;">
+                                <input type="hidden" name="appointmentId" value="@ViewBag.AppointmentId" />
+                                <input type="hidden" name="date" value="@ViewBag.Date" />
+                                <input type="hidden" name="doctorId" value="@ViewBag.DoctorId" />
+                                <input type="hidden" name="currentPage" value="@i" />
+                                <input type="hidden" name="pageSize" value="@ViewBag.PageSize" />
+                                <button type="submit" class="page-link">@i</button>
+                            </form>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+}

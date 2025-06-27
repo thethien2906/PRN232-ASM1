@@ -75,50 +75,32 @@ namespace HIV_CARE.APIServices.BE.ThienTTT.Controllers
             return Ok(result);
         }
 
-        // GET api/AppointmentThienTTTs/search?appointmentId=1&date=2025-06-05&doctorId=1
-        [HttpGet("search")]
-        public async Task<ActionResult<List<AppointmentThienTtt>>> Search(
-            [FromQuery] int? appointmentId = null,
-            [FromQuery] DateTime? date = null,
-            [FromQuery] int? doctorId = null)
+        // Search 
+        [HttpGet("{id}/{date}/{doctorId}")]
+        public async Task<List<AppointmentThienTtt>> Get(int id, DateTime date, int doctorId)
         {
-            var results = await _appointmentThienTttService.SearchAsync(appointmentId ?? 0, date ?? DateTime.MinValue, doctorId ?? 0);
-            return Ok(results);
+            return await _appointmentThienTttService.SearchAsync(id, date, doctorId);
         }
 
-        // GET api/AppointmentThienTTTs/paged?currentPage=1&pageSize=10
-        [HttpGet("paged")]
-        public async Task<ActionResult<List<AppointmentThienTtt>>> GetPaged(
-            [FromQuery] int currentPage = 1,
-            [FromQuery] int pageSize = 10)
+        // Search with paging only
+        [HttpGet("{currentPage}/{pageSize}")]
+        public async Task<PaginationResult<List<AppointmentThienTtt>>> Get(int currentPage, int pageSize)
         {
-            var results = await _appointmentThienTttService.SearchAsync(currentPage, pageSize);
-            return Ok(results);
+            return await _appointmentThienTttService.SearchAsync(currentPage, pageSize);
         }
 
-        // GET api/AppointmentThienTTTs/search-paged?appointmentId=1&date=2025-06-05&doctorId=1&currentPage=1&pageSize=10
-        [HttpGet("search-paged")]
-        public async Task<ActionResult<List<AppointmentThienTtt>>> SearchPaged(
-            [FromQuery] int? appointmentId = null,
-            [FromQuery] DateTime? date = null,
-            [FromQuery] int? doctorId = null,
-            [FromQuery] int currentPage = 1,
-            [FromQuery] int pageSize = 10)
+        // Search with id, date, doctorId and paging
+        [HttpGet("{id}/{date}/{doctorId}/{currentPage}/{pageSize}")]
+        public async Task<PaginationResult<List<AppointmentThienTtt>>> Get(int id, DateTime date, int doctorId, int currentPage, int pageSize)
         {
-            var results = await _appointmentThienTttService.SearchAsync(
-                appointmentId ?? 0,
-                date ?? DateTime.MinValue,
-                doctorId ?? 0,
-                currentPage,
-                pageSize);
-            return Ok(results);
+            return await _appointmentThienTttService.SearchAsync(id, date, doctorId, currentPage, pageSize);
         }
 
-        // POST api/AppointmentThienTTTs/search-request
-        [HttpPost("search-request")]
-        public async Task<ActionResult<List<AppointmentThienTtt>>> GetWithRequest([FromBody] SearchAppointmentThienTttRequest request)
+        // NEW: Search with body request and paging
+        [HttpPost("Search")]
+        public async Task<PaginationResult<List<AppointmentThienTtt>>> GetWithRequest(SearchAppointmentThienTttRequest request)
         {
-            return Ok(new List<AppointmentThienTtt>());
+            return await _appointmentThienTttService.SearchWithRequestAsync(request);
         }
     }
 }

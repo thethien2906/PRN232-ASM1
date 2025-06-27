@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using HIV_CARE.Repositories.ThienTTT.Models;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace HIV_CARE.MVCWebApp.FE.ThienTTT.Controllers
 {
@@ -19,13 +20,9 @@ namespace HIV_CARE.MVCWebApp.FE.ThienTTT.Controllers
             using (var httpClient = new HttpClient())
             {
                 var tokenString = HttpContext.Request.Cookies.FirstOrDefault(c => c.Key == "TokenString").Value;
+                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + tokenString);
 
-                if (!string.IsNullOrEmpty(tokenString))
-                {
-                    httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + tokenString);
-                }
-
-                using (var response = await httpClient.GetAsync(APIEndPoint + "AppointmentThienTTTs"))
+                using (var response = await httpClient.GetAsync(APIEndPoint + "AppointmentThienTtts"))
                 {
                     if (response.IsSuccessStatusCode)
                     {
@@ -34,12 +31,65 @@ namespace HIV_CARE.MVCWebApp.FE.ThienTTT.Controllers
 
                         if (result != null)
                         {
+                            ViewBag.Doctors = await this.GetDoctors();
+                            ViewBag.SearchResult = false;
                             return View(result);
                         }
                     }
                 }
             }
 
+            ViewBag.Doctors = await this.GetDoctors();
+            ViewBag.SearchResult = false;
+            return View(new List<AppointmentThienTtt>());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(int? appointmentId, DateTime? date, int? doctorId, int currentPage = 1, int pageSize = 10)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                var tokenString = HttpContext.Request.Cookies.FirstOrDefault(c => c.Key == "TokenString").Value;
+                httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + tokenString);
+
+                var searchRequest = new
+                {
+                    CurrentPage = currentPage,
+                    PageSize = pageSize,
+                    AppointmentId = appointmentId,
+                    Date = date,
+                    DoctorId = doctorId
+                };
+
+                var json = JsonConvert.SerializeObject(searchRequest);
+                var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+                using (var response = await httpClient.PostAsync(APIEndPoint + "AppointmentThienTtts/Search", stringContent))
+                {
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        var result = JsonConvert.DeserializeObject<dynamic>(content);
+
+                        var appointments = JsonConvert.DeserializeObject<List<AppointmentThienTtt>>(result.items.ToString());
+
+                        ViewBag.Doctors = await this.GetDoctors();
+                        ViewBag.SearchResult = true;
+                        ViewBag.TotalItems = (int)result.totalItems;
+                        ViewBag.TotalPages = (int)result.totalPages;
+                        ViewBag.CurrentPage = (int)result.currentPage;
+                        ViewBag.PageSize = (int)result.pageSize;
+                        ViewBag.AppointmentId = appointmentId;
+                        ViewBag.Date = date;
+                        ViewBag.DoctorId = doctorId;
+
+                        return View(appointments);
+                    }
+                }
+            }
+
+            ViewBag.Doctors = await this.GetDoctors();
+            ViewBag.SearchResult = false;
             return View(new List<AppointmentThienTtt>());
         }
 

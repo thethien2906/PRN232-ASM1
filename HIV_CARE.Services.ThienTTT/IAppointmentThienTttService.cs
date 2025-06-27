@@ -1,4 +1,5 @@
-﻿using HIV_CARE.Repositories.ThienTTT.Models;
+﻿using HIV_CARE.Repositories.ThienTTT.ModelExtension;
+using HIV_CARE.Repositories.ThienTTT.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,10 @@ namespace HIV_CARE.Services.ThienTTT
     {
         Task<List<AppointmentThienTtt>> GetAllAsync();
         Task<AppointmentThienTtt> GetByIdAsync(int id);
-        Task<List<AppointmentThienTtt>> SearchAsync(int currentPage, int pageSize);
+        Task<PaginationResult<List<AppointmentThienTtt>>> SearchAsync(int currentPage, int pageSize);
         Task<List<AppointmentThienTtt>> SearchAsync(int id, DateTime date, int doctorId);
-
-        Task<List<AppointmentThienTtt>> SearchAsync(int id, DateTime date, int doctorId, int currentPage, int pageSize);
-
+        Task<PaginationResult<List<AppointmentThienTtt>>> SearchAsync(int id, DateTime date, int doctorId, int currentPage, int pageSize);
+        Task<PaginationResult<List<AppointmentThienTtt>>> SearchWithRequestAsync(SearchAppointmentThienTttRequest request);
         Task<int> CreateAsync(AppointmentThienTtt AppointmentThienTtt);
         Task<int> UpdateAsync(AppointmentThienTtt AppointmentThienTtt);
         Task<bool> DeleteAsync(int id);

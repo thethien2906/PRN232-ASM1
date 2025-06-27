@@ -10,6 +10,9 @@ namespace HIV_CARE.Repositories.ThienTTT.ModelExtension
     {
         public int? CurrentPage { get; set; } = 1;
         public int? PageSize { get; set; } = 10;
+        public int? AppointmentId { get; set; }
+        public DateTime? Date { get; set; }
+        public int? DoctorId { get; set; }
     }
 
     public class SearchByName : SearchAppointmentThienTttRequest
@@ -18,11 +21,4 @@ namespace HIV_CARE.Repositories.ThienTTT.ModelExtension
         public DateTime? date { get; set; }
         public int? doctorId { get; set; }
     }
-
-    //public class SearchByName()
-    //{
-
-    //}
-
-
 }

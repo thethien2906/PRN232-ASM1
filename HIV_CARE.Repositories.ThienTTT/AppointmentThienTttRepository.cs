@@ -55,13 +55,17 @@ namespace HIV_CARE.Repositories.ThienTTT
         }
         public async Task<PaginationResult<List<AppointmentThienTtt>>> GetAllAsync(int currentPage, int pageSize)
         {
-            var pageMedical = await this.GetAllAsync();
+            var query = _context.AppointmentThienTtts
+                .Include(v => v.DoctorsPhatNh)
+                .AsQueryable();
 
-            //// Paging
-            var totalItems = pageMedical.Count();
+            var totalItems = await query.CountAsync();
             var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
 
-            pageMedical = pageMedical.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+            var items = await query
+                .Skip((currentPage - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
 
             var result = new PaginationResult<List<AppointmentThienTtt>>
             {
@@ -69,36 +73,87 @@ namespace HIV_CARE.Repositories.ThienTTT
                 TotalPages = totalPages,
                 CurrentPage = currentPage,
                 PageSize = pageSize,
-                Items = pageMedical
+                Items = items
             };
 
             return result;
-
         }
-        public async Task<List<AppointmentThienTtt>> SearchAsync(int id, DateTime date, int doctorId, int currentPage, int pageSize)
+        public async Task<PaginationResult<List<AppointmentThienTtt>>> SearchAsync(int id, DateTime date, int doctorId, int currentPage, int pageSize)
         {
             var query = _context.AppointmentThienTtts
                 .Include(v => v.DoctorsPhatNh)
                 .AsQueryable();
-            if (id != null)
+
+            if (id > 0)
             {
                 query = query.Where(v => v.AppointmentsThienTttid == id);
             }
-            if (date != null)
+            if (date != DateTime.MinValue)
             {
-                query = query.Where(v => v.AppointmentDate == date);
+                query = query.Where(v => v.AppointmentDate.Date == date.Date);
             }
-            if (doctorId != null)
+            if (doctorId > 0)
             {
-                query = query.Where(v => v.DoctorsPhatNh.DoctorsPhatNhid == doctorId);
+                query = query.Where(v => v.DoctorsPhatNhid == doctorId);
             }
 
-            return await query
+            var totalItems = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+            var items = await query
                 .Skip((currentPage - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
-        }
 
+            var result = new PaginationResult<List<AppointmentThienTtt>>
+            {
+                TotalItems = totalItems,
+                TotalPages = totalPages,
+                CurrentPage = currentPage,
+                PageSize = pageSize,
+                Items = items
+            };
+
+            return result;
+        }
+        public async Task<PaginationResult<List<AppointmentThienTtt>>> SearchWithRequestAsync(SearchAppointmentThienTttRequest request)
+        {
+            var query = _context.AppointmentThienTtts
+                .Include(v => v.DoctorsPhatNh)
+                .AsQueryable();
+
+            if (request.AppointmentId != null)
+            {
+                query = query.Where(v => v.AppointmentsThienTttid == request.AppointmentId);
+            }
+            if (request.Date != null)
+            {
+                query = query.Where(v => v.AppointmentDate.Date == request.Date.Value.Date);
+            }
+            if (request.DoctorId != null)
+            {
+                query = query.Where(v => v.DoctorsPhatNhid == request.DoctorId);
+            }
+
+            var totalItems = await query.CountAsync();
+            var totalPages = (int)Math.Ceiling((double)totalItems / request.PageSize.Value);
+
+            var items = await query
+                .Skip((request.CurrentPage.Value - 1) * request.PageSize.Value)
+                .Take(request.PageSize.Value)
+                .ToListAsync();
+
+            var result = new PaginationResult<List<AppointmentThienTtt>>
+            {
+                TotalItems = totalItems,
+                TotalPages = totalPages,
+                CurrentPage = request.CurrentPage.Value,
+                PageSize = request.PageSize.Value,
+                Items = items
+            };
+
+            return result;
+        }
     }
 
 }

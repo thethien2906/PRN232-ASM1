@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HIV_CARE.Repositories.ThienTTT.ModelExtension;
 
 namespace HIV_CARE.Services.ThienTTT
 {
@@ -48,17 +49,19 @@ namespace HIV_CARE.Services.ThienTTT
                 doctorId == 0 ? null : doctorId);
         }
 
-        public async Task<List<AppointmentThienTtt>> SearchAsync(int currentPage, int pageSize)
+        public async Task<PaginationResult<List<AppointmentThienTtt>>> SearchAsync(int currentPage, int pageSize)
         {
-            var paginationResult = await _appointmentThienTttRepository.GetAllAsync(currentPage, pageSize);
-            return paginationResult.Items;
+            return await _appointmentThienTttRepository.GetAllAsync(currentPage, pageSize);
         }
 
-        public async Task<List<AppointmentThienTtt>> SearchAsync(int id, DateTime date, int doctorId, int currentPage, int pageSize)
+        public async Task<PaginationResult<List<AppointmentThienTtt>>> SearchAsync(int id, DateTime date, int doctorId, int currentPage, int pageSize)
         {
             return await _appointmentThienTttRepository.SearchAsync(id, date, doctorId, currentPage, pageSize);
         }
-
+        public async Task<PaginationResult<List<AppointmentThienTtt>>> SearchWithRequestAsync(SearchAppointmentThienTttRequest request)
+        {
+            return await _appointmentThienTttRepository.SearchWithRequestAsync(request);
+        }
         public async Task<int> UpdateAsync(AppointmentThienTtt appointmentThienTtt)
         {
             return await _appointmentThienTttRepository.UpdateAsync(appointmentThienTtt);
