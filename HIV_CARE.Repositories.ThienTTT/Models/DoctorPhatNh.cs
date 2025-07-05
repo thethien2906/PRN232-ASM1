@@ -21,10 +21,6 @@ public partial class DoctorPhatNh
 
     public int MaxPatientsPerDay { get; set; }
 
-    public TimeOnly WorkingStartTime { get; set; }
-
-    public TimeOnly WorkingEndTime { get; set; }
-
     public DateTime AvailableStartDate { get; set; }
 
     public DateTime AvailableEndDate { get; set; }

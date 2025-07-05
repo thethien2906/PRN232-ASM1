@@ -38,12 +38,6 @@
                 MaxPatientsPerDay
             </th>
             <th>
-                WorkingStartTime
-            </th>
-            <th>
-                WorkingEndTime
-            </th>
-            <th>
                 AvailableStartDate
             </th>
             <th>
@@ -86,8 +80,6 @@
                         consultationFee: parseFloat($("#consultationFee").val()),
                         isAvailable: $("#isAvailable").is(":checked"), 
                         maxPatientsPerDay: parseInt($("#maxPatientsPerDay").val()),
-                        workingStartTime: $("#workingStartTime").val(),
-                        workingEndTime: $("#workingEndTime").val(),
                         availableStartDate: $("#availableStartDate").val(),
                         availableEndDate: $("#availableEndDate").val(),
                         createdDate: $("#createdDate").val(),
@@ -130,8 +122,6 @@
                         html += '<td>' + item.consultationFee + '</td>';
                         html += '<td>' + item.isAvailable + '</td>';
                         html += '<td>' + item.maxPatientsPerDay + '</td>';
-                        html += '<td>' + item.workingStartTime + '</td>';
-                        html += '<td>' + item.workingEndTime + '</td>';
                         html += '<td>' + item.availableStartDate + '</td>';
                         html += '<td>' + item.availableEndDate + '</td>';
                         html += '<td>' + item.createdDate + '</td>';
@@ -242,14 +232,6 @@
                             <div class="col-md-4">
                                 <label for="maxPatientsPerDay">Max Patients Per Day</label>
                                 <input type="number" id="maxPatientsPerDay" name="maxPatientsPerDay" class="form-control" />
-                            </div>
-                            <div class="col-md-4">
-                                <label for="workingStartTime">Working Start Time</label>
-                                <input type="datetime-local" id="workingStartTime" name="workingStartTime" class="form-control" />
-                            </div>
-                            <div class="col-md-4">
-                                <label for="workingEndTime">Working End Time</label>
-                                <input type="datetime-local" id="workingEndTime" name="workingEndTime" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group row">
