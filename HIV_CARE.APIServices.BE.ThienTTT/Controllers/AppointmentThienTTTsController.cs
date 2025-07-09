@@ -2,6 +2,7 @@
 using HIV_CARE.Repositories.ThienTTT.Models;
 using HIV_CARE.Services.ThienTTT;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace HIV_CARE.APIServices.BE.ThienTTT.Controllers
 {
@@ -18,6 +19,8 @@ namespace HIV_CARE.APIServices.BE.ThienTTT.Controllers
 
         // GET: api/AppointmentThienTTTs
         [HttpGet]
+        
+        [EnableQuery]
         public async Task<ActionResult<IEnumerable<AppointmentThienTtt>>> Get()
         {
             var appointments = await _appointmentThienTttService.GetAllAsync();
@@ -101,6 +104,15 @@ namespace HIV_CARE.APIServices.BE.ThienTTT.Controllers
         public async Task<PaginationResult<List<AppointmentThienTtt>>> GetWithRequest(SearchAppointmentThienTttRequest request)
         {
             return await _appointmentThienTttService.SearchWithRequestAsync(request);
+        }
+
+        // GET: api/AppointmentThienTTTs
+        [HttpGet("Search1")]
+        [EnableQuery]
+        public async Task<ActionResult<IEnumerable<AppointmentThienTtt>>> Search1()
+        {
+            var appointments = await _appointmentThienTttService.GetAllAsync();
+            return Ok(appointments);
         }
     }
 }

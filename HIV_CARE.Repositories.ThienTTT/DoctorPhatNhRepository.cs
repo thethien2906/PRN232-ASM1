@@ -13,5 +13,7 @@ namespace HIV_CARE.Repositories.ThienTTT
     {
         public DoctorPhatNhRepository() => _context ??= new DBContext.SU25_PRN232_SE1725_G4_HIVcareContext();
         public DoctorPhatNhRepository(DBContext.SU25_PRN232_SE1725_G4_HIVcareContext context) => _context = context;
+
+
     }
 }

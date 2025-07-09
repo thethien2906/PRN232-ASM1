@@ -2,11 +2,13 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace HIV_CARE.Repositories.ThienTTT.Models;
 
 public partial class AppointmentThienTtt
 {
+    [Key]
     public int AppointmentsThienTttid { get; set; }
 
     public int DoctorsPhatNhid { get; set; }

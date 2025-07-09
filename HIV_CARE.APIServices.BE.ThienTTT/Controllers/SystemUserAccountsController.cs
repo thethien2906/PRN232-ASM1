@@ -32,7 +32,7 @@ namespace HIV_CARE.APIServices.BE.ThienTTT.Controllers
 
             var token = GenerateJSONWebToken(user.Result);
 
-            return Ok(token);
+            return Ok(new {token = token, role = user.Result.RoleId});
         }
 
         private string GenerateJSONWebToken(SystemUserAccount systemUserAccount)

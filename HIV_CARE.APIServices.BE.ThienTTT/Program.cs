@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text.Json.Serialization;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.OData;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
+using HIV_CARE.Repositories.ThienTTT.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -42,6 +46,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             // ClockSkew = TimeSpan.Zero
         };
     });
+
+static IEdmModel GetEdmModel()
+{
+    var odataBuilder = new ODataConventionModelBuilder();
+    odataBuilder.EntitySet<AppointmentThienTtt>("AppointmentThienTtt");
+    odataBuilder.EntitySet<DoctorPhatNh>("DoctorPhatNh");
+
+    return odataBuilder.GetEdmModel();
+}
+builder.Services.AddControllers().AddOData(options =>
+{
+    options.Select().Filter().OrderBy().Expand().SetMaxTop(null).Count();
+    options.AddRouteComponents("odata", GetEdmModel());
+});
 
 
 builder.Services.AddSwaggerGen(option =>
