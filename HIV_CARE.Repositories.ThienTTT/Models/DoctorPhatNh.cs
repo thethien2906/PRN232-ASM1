@@ -11,10 +11,14 @@ public partial class DoctorPhatNh
     [Key]
     public int DoctorsPhatNhid { get; set; }
 
+    [Required(ErrorMessage = "License number is required.")]
+    [RegularExpression(@"^DOC\d{3}$", ErrorMessage = "License number must follow the format DOCXXX (e.g., DOC001).")]
     public string LicenseNumber { get; set; }
 
+    [Required(ErrorMessage = "Specialization is required.")]
     public string Specialization { get; set; }
 
+    [Required(ErrorMessage = "Years of experience are required.")]
     public int ExperienceYears { get; set; }
 
     public decimal ConsultationFee { get; set; }

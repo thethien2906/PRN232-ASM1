@@ -11,10 +11,13 @@ public partial class AppointmentThienTtt
     [Key]
     public int AppointmentsThienTttid { get; set; }
 
+    [Required(ErrorMessage = "A doctor must be selected.")]
     public int DoctorsPhatNhid { get; set; }
 
+    [Required(ErrorMessage = "Patient name cannot be empty.")]
     public string PatientName { get; set; }
 
+    [Required(ErrorMessage = "An appointment date must be provided.")]
     public DateTime AppointmentDate { get; set; }
 
     public string AppointmentTime { get; set; }

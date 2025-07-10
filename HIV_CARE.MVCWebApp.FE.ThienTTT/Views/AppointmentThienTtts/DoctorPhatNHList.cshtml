@@ -72,26 +72,30 @@
                 //alert("Save in progress");
                 $.ajax({
                     type: 'POST',
-                    url: 'https://localhost:7094/api/DoctorPhatNhs', 
+                    url: 'https://localhost:7094/api/DoctorPhatNhs',
                     data: JSON.stringify({
-                        doctorsPhatNhid: parseInt($("#doctorsPhatNhid").val()), 
+                        // Corrected lines to handle empty inputs
+                        doctorsPhatNhid: parseInt($("#doctorsPhatNhid").val()) || 0,
+                        licenseNumber: $("#licenseNumber").val(),
                         specialization: $("#specialization").val(),
-                        experienceYears: parseInt($("#experienceYears").val()),
-                        consultationFee: parseFloat($("#consultationFee").val()),
-                        isAvailable: $("#isAvailable").is(":checked"), 
-                        maxPatientsPerDay: parseInt($("#maxPatientsPerDay").val()),
+                        experienceYears: parseInt($("#experienceYears").val()) || 0,
+                        consultationFee: parseFloat($("#consultationFee").val()) || 0,
+                        isAvailable: $("#isAvailable").is(":checked"),
+                        maxPatientsPerDay: parseInt($("#maxPatientsPerDay").val()) || 0,
+
+                        // These fields can be null or empty strings, so they are okay
                         availableStartDate: $("#availableStartDate").val(),
                         availableEndDate: $("#availableEndDate").val(),
                         createdDate: $("#createdDate").val(),
                         createdBy: $("#createdBy").val(),
                         modifiedDate: $("#modifiedDate").val(),
                         modifiedBy: $("#modifiedBy").val(),
-                        isActive: $("#isActive").is(":checked") 
+                        isActive: $("#isActive").is(":checked")
                     }),
                     contentType: "application/json;charset=utf-8",
                     success: function (result) {
-                        if (result) { 
-                            $('#doctorModal').modal('hide'); 
+                        if (result) {
+                            $('#doctorModal').modal('hide');
                             loadData();
                         }
                     },
@@ -106,7 +110,7 @@
 
         function loadData() {
             $.ajax({
-                url: 'https://localhost:7094/api/DoctorPhatNhs', // Your actual API endpoint for doctor data
+                url: 'https://localhost:7094/api/DoctorPhatNhs',
                 type: "GET",
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
@@ -147,7 +151,6 @@
             $('#frmDoctor input[type="text"]').val('');
             $('#frmDoctor input[type="number"]').val('');
             $('#frmDoctor input[type="checkbox"]').prop('checked', false);
-            $('#doctorsPhatNhid').val('0'); // Set ID to 0 for new record
             $('#doctorModalLabel').text('Add New Doctor'); // Change modal title
             $('#doctorModal').modal('show');
         }
@@ -202,8 +205,7 @@
                         <div class="form-group row">
                             <div class="col-md-4">
                                 <label for="doctorsPhatNhid">Doctor ID</label>
-                                <input type="hidden" id="doctorsPhatNhid" name="doctorsPhatNhid" value="0" />
-                                <input type="text" id="doctorsPhatNhid" name="doctorsPhatNhid" class="form-control" readonly />
+                                <input type="number" id="doctorsPhatNhid" name="doctorsPhatNhid" class="form-control" />
                             </div>
                             <div class="col-md-4">
                                 <label for="licenseNumber">License Number</label>

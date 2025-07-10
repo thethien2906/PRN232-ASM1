@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using HIV_CARE.Repositories.ThienTTT.Models;
 using Newtonsoft.Json;
 using System.Text;
+using System.Net.Http.Json; // Required for PostAsJsonAsync
 
 namespace HIV_CARE.MVCWebApp.FE.ThienTTT.Controllers
 {
@@ -12,7 +13,6 @@ namespace HIV_CARE.MVCWebApp.FE.ThienTTT.Controllers
 
         public AppointmentThienTttsController()
         {
-
         }
 
         public async Task<IActionResult> Index()
@@ -152,10 +152,8 @@ namespace HIV_CARE.MVCWebApp.FE.ThienTTT.Controllers
                         httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + tokenString);
                     }
 
-                    // Set default values for required fields
                     appointmentThienTtt.CreatedDate = DateTime.Now;
                     appointmentThienTtt.CreatedBy = HttpContext.Request.Cookies["UserName"] ?? "System";
-                    // Set default status if empty
                     if (string.IsNullOrEmpty(appointmentThienTtt.Status))
                     {
                         appointmentThienTtt.Status = "Pending";
@@ -182,7 +180,6 @@ namespace HIV_CARE.MVCWebApp.FE.ThienTTT.Controllers
                 }
             }
 
-            // Reload doctors for the dropdown if there's an error
             var doctors = await this.GetDoctors();
             ViewData["DoctorsPhatNhid"] = new SelectList(doctors, "DoctorsPhatNhid", "LicenseNumber", appointmentThienTtt.DoctorsPhatNhid);
 
@@ -305,7 +302,6 @@ namespace HIV_CARE.MVCWebApp.FE.ThienTTT.Controllers
                         httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + tokenString);
                     }
 
-                    // Set modified values
                     appointmentThienTtt.ModifiedDate = DateTime.Now;
                     appointmentThienTtt.ModifiedBy = HttpContext.Request.Cookies["UserName"] ?? "System";
 
@@ -324,14 +320,54 @@ namespace HIV_CARE.MVCWebApp.FE.ThienTTT.Controllers
                 }
             }
 
-            // Reload doctors for the dropdown if there's an error
             var doctors = await this.GetDoctors();
             ViewData["DoctorsPhatNhid"] = new SelectList(doctors, "DoctorsPhatNhid", "LicenseNumber", appointmentThienTtt.DoctorsPhatNhid);
 
             return View(appointmentThienTtt);
         }
 
-   
+
+        // GET: AppointmentThienTtts/CreateDoctor
+        public IActionResult CreateDoctor()
+        {
+            return View();
+        }
+        // POST: AppointmentThienTtts/CreateDoctor
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateDoctor(DoctorPhatNh doctorPhatNh)
+        {
+            if (ModelState.IsValid)
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    var tokenString = HttpContext.Request.Cookies.FirstOrDefault(c => c.Key == "TokenString").Value;
+                    if (!string.IsNullOrEmpty(tokenString))
+                    {
+                        httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + tokenString);
+                    }
+
+                    // Call the DoctorPhatNhs API to create the doctor
+                    using (var response = await httpClient.PostAsJsonAsync(APIEndPoint + "DoctorPhatNhs", doctorPhatNh))
+                    {
+                        if (response.IsSuccessStatusCode)
+                        {
+                            // On success, redirect to the page that lists the doctors
+                            return RedirectToAction(nameof(DoctorPhatNHList));
+                        }
+                        else
+                        {
+                            var errorContent = await response.Content.ReadAsStringAsync();
+                            ModelState.AddModelError(string.Empty, "API Error: Could not create doctor. " + errorContent);
+                        }
+                    }
+                }
+            }
+
+            // If the model is not valid or the API call fails, return to the form with the entered data
+            return View(doctorPhatNh);
+        }
+
 
         public async Task<ActionResult> DoctorPhatNHList()
         {

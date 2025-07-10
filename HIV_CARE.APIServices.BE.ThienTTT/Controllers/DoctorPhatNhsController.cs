@@ -20,29 +20,17 @@ namespace HIV_CARE.APIServices.BE.ThienTTT.Controllers
             return await _doctorPhatNhService.GetAllAsync();
         }
 
-        //// GET api/<DoctorNhsController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
+        // POST api/DoctorPhatNHs
+        [HttpPost]
+        public async Task<ActionResult<int>> Post([FromBody] DoctorPhatNh doctorPhatNh)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        //// POST api/<DoctorNhsController>
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
-
-        //// PUT api/<DoctorNhsController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<DoctorNhsController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+            var result = await _doctorPhatNhService.CreateAsync(doctorPhatNh);
+            return Ok(result);
+        }
     }
 }
